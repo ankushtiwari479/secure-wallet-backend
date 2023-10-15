@@ -8,7 +8,7 @@ const db = require('./db/db')
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(cors())
 
    app.get('/',async (req,res)=>{
