@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const Wallet = require('./db/models/Wallet');
 const Transaction = require('./db/models/Transaction');
+const db = require('./db/db')
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -27,6 +28,7 @@ app.use(cors())
         date: wallet.date,
       });
     } catch (error) {
+      console.log("error",error)
       res.status(500).json({ error: 'Error setting up wallet' });
     }
   });
