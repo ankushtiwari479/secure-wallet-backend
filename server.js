@@ -1,6 +1,6 @@
 // Import required modules and libraries
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const cors = require('cors');
 const Wallet = require('./db/models/Wallet');
 const Transaction = require('./db/models/Transaction');
