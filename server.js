@@ -1,6 +1,6 @@
 // Import required modules and libraries
 const express = require('express');
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const Wallet = require('./db/models/Wallet');
 const Transaction = require('./db/models/Transaction');
@@ -8,7 +8,7 @@ const db = require('./db/db')
 const app = express();
 const port = process.env.PORT || 3000;
 
-// app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(cors())
 
    app.get('/',async (req,res)=>{
