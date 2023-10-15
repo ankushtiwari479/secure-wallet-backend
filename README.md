@@ -1,1 +1,1 @@
-# secure-wallet-backend
+# verifiable-credentials-server
