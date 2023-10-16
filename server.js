@@ -19,6 +19,7 @@ app.use(cors())
   app.post('/setup', async (req, res) => {
     try {
       const { balance, name } = req.body;
+      console.log("req.body",req.body)
       const wallet = new Wallet({ balance, name });
       await wallet.save();
       res.status(200).json({
@@ -48,13 +49,13 @@ app.use(cors())
   
       const transaction = new Transaction({
         walletId: wallet._id,
-        amount,
+        amount:Number(amount),
         description,
-        balance: wallet.balance + amount,
+        balance: Number(wallet.balance) + Number(amount),
         type,
       });
   
-      wallet.balance += amount;
+      wallet.balance += Number(amount);
   
       await Promise.all([transaction.save(), wallet.save()]);
   
@@ -63,19 +64,31 @@ app.use(cors())
         transactionId: transaction._id,
       });
     } catch (error) {
+      console.error("error in creating transaction-->",error)
       res.status(500).json({ error: 'Error processing transaction' });
     }
   });
   
   app.get('/transactions', async (req, res) => {
-    const { walletId, skip, limit } = req.query;
+    const { walletId, skip, limit, dateSort, amountSort } = req.query;
+    const sortOptions = {};
+    if (dateSort === 'asc' || dateSort === 'desc') {
+      sortOptions.date = dateSort;
+    }
+    if (amountSort === 'asc' || amountSort === 'desc') {
+      sortOptions.amount = amountSort;
+    }
     try {
+      const totalCount = await Transaction.countDocuments({ walletId });
+      
       const transactions = await Transaction.find({ walletId })
+        .sort(sortOptions) // Apply sorting options
         .skip(parseInt(skip) || 0)
         .limit(parseInt(limit) || 10);
   
-      res.status(200).json(transactions);
+      res.status(200).json({ transactions, count: totalCount });
     } catch (error) {
+      console.error("error", error);
       res.status(500).json({ error: 'Error fetching transactions' });
     }
   });
