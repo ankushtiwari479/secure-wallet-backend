@@ -27,7 +27,7 @@ app.use(cors())
       await wallet.save();
   
       res.status(200).json({
-        id: wallet._id,
+        _id: wallet._id,
         balance: wallet.balance,
         name: wallet.name,
         date: wallet.date,
