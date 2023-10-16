@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const WalletSchema = new mongoose.Schema({
     balance: Number,
-    name: String,
+    name: {type: String, unique:true},
     date: { type: Date, default: Date.now },
   });
 

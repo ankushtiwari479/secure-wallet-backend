@@ -19,9 +19,18 @@ app.use(cors())
   app.post('/setup', async (req, res) => {
     try {
       const { balance, name } = req.body;
-      console.log("req.body",req.body)
+  
+      // Check if a wallet with the same name already exists
+      const existingWallet = await Wallet.findOne({ name });
+  
+      if (existingWallet) {
+        return res.status(400).json({ error: 'A wallet with the same name already exists' });
+      }
+  
+      // If no existing wallet found, create a new one
       const wallet = new Wallet({ balance, name });
       await wallet.save();
+  
       res.status(200).json({
         id: wallet._id,
         balance: wallet.balance,
@@ -29,7 +38,7 @@ app.use(cors())
         date: wallet.date,
       });
     } catch (error) {
-      console.log("error",error)
+      console.error("error", error);
       res.status(500).json({ error: 'Error setting up wallet' });
     }
   });
