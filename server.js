@@ -11,23 +11,18 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cors())
 
-   app.get('/',async (req,res)=>{
+  app.get('/',async (req,res)=>{
     res.status(200).json({message:"sucess"})
   })
-  
-  // API endpoints
   app.post('/setup', async (req, res) => {
     try {
       const { balance, name } = req.body;
   
-      // Check if a wallet with the same name already exists
       const existingWallet = await Wallet.findOne({ name });
   
       if (existingWallet) {
         return res.status(400).json({ error: 'A wallet with the same name already exists' });
       }
-  
-      // If no existing wallet found, create a new one
       const wallet = new Wallet({ balance, name });
       await wallet.save();
   
